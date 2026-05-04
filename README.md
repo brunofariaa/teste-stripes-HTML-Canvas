@@ -1,0 +1,1 @@
+# teste-stripes-HTML-Canvas
