@@ -12,7 +12,7 @@ html {
 }
 
 /* We style the source elements so they look good inside the canvas */
-.bar-item {
+canvas .bar-item {
     width: 300px;
     height: 60px;
     visibility: visible; /* Ensure it's not hidden by inheritance */
