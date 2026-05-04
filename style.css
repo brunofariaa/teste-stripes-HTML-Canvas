@@ -15,6 +15,7 @@ html {
 .bar-item {
     width: 300px;
     height: 60px;
+    visibility: visible; /* Ensure it's not hidden by inheritance */
     background: linear-gradient(90deg, #222, #333);
     border-left: 4px solid #007bff;
     border-radius: 8px;
@@ -29,7 +30,11 @@ html {
 }
 
 #ui-source {
-    /* Position them off-screen so they don't interfere with the canvas */
+    /* Don't use top: -1000px; it can break the layout box calculation */
     position: absolute;
-    top: -1000px;
+    top: 0;
+    left: 0;
+    pointer-events: none; /* Let clicks pass through to the canvas */
+    opacity: 0;          /* Make it invisible, but still 'there' for the GPU */
+    z-index: -1;         /* Move it behind the canvas */
 }
