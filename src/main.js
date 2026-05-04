@@ -1,6 +1,6 @@
 if (!CanvasRenderingContext2D.prototype.drawElementImage) {
     const warning = document.createElement('div');
-    warning.style = 'position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: #ff4757; color: white; padding: 15px; border-radius: 8px; z-index: 1000; font-family: sans-serif;';
+    warning.style = 'position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: #ff4757; color: white; padding: 15px; border-radius: 8px; z-index: 1000; font-family: sans-serif; box-shadow: 0 4px 15px rgba(0,0,0,0.5);';
     warning.innerHTML = '⚠️ <strong>Experimental API Required:</strong> Please use Chrome Canary and enable #canvas-draw-element in flags.';
     document.body.appendChild(warning);
 }
@@ -9,15 +9,20 @@ import { Spring } from './physics.js';
 
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
-// This will still work as long as the classes match
+
+// Select the bars inside the canvas
 const barElements = document.querySelectorAll('canvas .bar-item');
 
-// Initialize a spring for each bar
-const bars = Array.from(barElements).map((el, i) => ({
-    el,
-    spring: new Spring(100 + (i * 80)), // Default vertical spacing
-    baseY: 100 + (i * 80)
-}));
+// Initialize springs with center-screen targets
+const bars = Array.from(barElements).map((el, i) => {
+    const spacing = 80;
+    const initialY = 200 + (i * spacing);
+    return {
+        el,
+        spring: new Spring(initialY),
+        baseY: initialY
+    };
+});
 
 function resize() {
     canvas.width = window.innerWidth;
@@ -27,13 +32,12 @@ function resize() {
 window.addEventListener('resize', resize);
 resize();
 
-// Handle Mouse Influence
+// Mouse Interaction Logic
 window.addEventListener('mousemove', (e) => {
     bars.forEach(bar => {
         const dist = Math.abs(e.clientY - bar.spring.currentY);
         if (dist < 150) {
-            // "Elastic" push based on distance
-            const push = (150 - dist) * 0.5;
+            const push = (150 - dist) * 0.6;
             bar.spring.targetY = bar.baseY + (e.clientY > bar.spring.currentY ? -push : push);
         } else {
             bar.spring.targetY = bar.baseY;
@@ -42,34 +46,33 @@ window.addEventListener('mousemove', (e) => {
 });
 
 // The Experimental Paint Loop
-canvas.addEventListener('paint', (event) => {
+// This fires when the browser is ready to render the layout subtree
+canvas.addEventListener('paint', () => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    // --- DEBUG: Draw a red square ---
-    ctx.fillStyle = 'red';
-    ctx.fillRect(10, 10, 50, 50); 
-    // --------------------------------
+    const centerX = (canvas.width / 2) - 150; // Centers the 300px bars
 
     bars.forEach(bar => {
         const currentY = bar.spring.update();
 
         // Layer 1: The Glow (Bloom)
         ctx.save();
-        ctx.filter = 'blur(15px) brightness(1.5)';
-        ctx.globalAlpha = 0.4;
-        ctx.drawElementImage(bar.el, 100, currentY);
+        ctx.filter = 'blur(20px) brightness(1.5)';
+        ctx.globalAlpha = 0.3;
+        ctx.drawElementImage(bar.el, centerX, currentY);
         ctx.restore();
 
         // Layer 2: The Crisp UI
-        ctx.drawElementImage(bar.el, 100, currentY);
+        ctx.drawElementImage(bar.el, centerX, currentY);
     });
 });
 
 function loop() {
-    // Force a paint event
+    // requestPaint() is the preferred way to trigger the 'paint' event
     if (canvas.requestPaint) {
         canvas.requestPaint();
     } else {
+        // Fallback for earlier Canary versions
         canvas.dispatchEvent(new Event('paint'));
     }
     requestAnimationFrame(loop);
