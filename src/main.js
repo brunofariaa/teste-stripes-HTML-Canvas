@@ -44,6 +44,11 @@ window.addEventListener('mousemove', (e) => {
 canvas.addEventListener('paint', (event) => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+    // --- DEBUG: Draw a red square ---
+    ctx.fillStyle = 'red';
+    ctx.fillRect(10, 10, 50, 50); 
+    // --------------------------------
+
     bars.forEach(bar => {
         const currentY = bar.spring.update();
 
