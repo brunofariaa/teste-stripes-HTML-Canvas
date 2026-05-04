@@ -9,7 +9,8 @@ import { Spring } from './physics.js';
 
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
-const barElements = document.querySelectorAll('.bar-item');
+// This will still work as long as the classes match
+const barElements = document.querySelectorAll('canvas .bar-item');
 
 // Initialize a spring for each bar
 const bars = Array.from(barElements).map((el, i) => ({
