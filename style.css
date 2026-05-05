@@ -10,4 +10,5 @@ html {
 
 #canvas {
     display: block;
+    max-width: 50vw;
 }
