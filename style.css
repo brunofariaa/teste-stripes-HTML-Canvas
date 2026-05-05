@@ -2,43 +2,12 @@ body,
 html {
     margin: 0;
     padding: 0;
-    background: #0a0a0a;
+    background: #000;
+    /* Pure Black from Image 2 */
     overflow: hidden;
     height: 100vh;
 }
 
 #canvas {
     display: block;
-}
-
-/* We style the source elements so they look good inside the canvas */
-canvas .bar-item {
-    width: 300px;
-    height: 60px;
-    visibility: visible;
-    /* Ensure it's not hidden by inheritance */
-    background: linear-gradient(90deg, #222, #333);
-    border-left: 4px solid #007bff;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    padding: 0 20px;
-    color: white;
-    font-family: 'Inter', sans-serif;
-    font-weight: 500;
-    user-select: none;
-    cursor: pointer;
-}
-
-#ui-source {
-    /* Don't use top: -1000px; it can break the layout box calculation */
-    position: absolute;
-    top: 0;
-    left: 0;
-    pointer-events: none;
-    /* Let clicks pass through to the canvas */
-    opacity: 0;
-    /* Make it invisible, but still 'there' for the GPU */
-    z-index: -1;
-    /* Move it behind the canvas */
 }

@@ -1,16 +1,17 @@
 export class Spring {
-    constructor(y = 0) {
-        this.currentY = y;
-        this.targetY = y;
+    constructor() {
+        this.currentValue = 0;
+        this.targetValue = 0;
         this.velocity = 0;
-        this.stiffness = 0.1;
+        // Standard spring constants for elasticity
+        this.stiffness = 0.08;
         this.damping = 0.85;
     }
 
     update() {
-        const force = -this.stiffness * (this.currentY - this.targetY);
+        const force = -this.stiffness * (this.currentValue - this.targetValue);
         this.velocity = (this.velocity + force) * this.damping;
-        this.currentY += this.velocity;
-        return this.currentY;
+        this.currentValue += this.velocity;
+        return this.currentValue;
     }
 }
