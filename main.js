@@ -15,16 +15,16 @@ let lines = [];
 
 function initializeGrid() {
     lines = [];
-
+    
     // 1. Calculamos a largura real que a grelha vai ocupar (ex: 500px num ecrã de 1000px)
     const totalGridWidth = canvas.width * GRID_WIDTH;
-
+    
     // 2. Calculamos a margem esquerda para centrar (ex: (1000 - 500) / 2 = 250px)
     const startX = (canvas.width - totalGridWidth) / 2;
-
+    
     // 3. O espaço entre linhas é calculado apenas sobre a largura da grelha
     const stepX = totalGridWidth / (LINE_COUNT - 1);
-
+    
     for (let i = 0; i < LINE_COUNT; i++) {
         // Cada linha começa no startX e avança um stepX
         const baseX = startX + (i * stepX);
@@ -65,7 +65,7 @@ window.addEventListener('mousemove', (e) => {
 
 function loop() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-
+    
     ctx.strokeStyle = LINE_COLOR;
     ctx.lineWidth = LINE_WIDTH;
     ctx.lineCap = 'round';
@@ -73,7 +73,7 @@ function loop() {
     lines.forEach(line => {
         const displacement = line.spring.update();
         ctx.beginPath();
-
+        
         // Centralização Vertical
         const gridTopY = (canvas.height * (1.0 - GRID_HEIGHT)) / 2;
         const gridBottomY = gridTopY + (canvas.height * GRID_HEIGHT);
