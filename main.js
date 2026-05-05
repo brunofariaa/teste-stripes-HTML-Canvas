@@ -8,6 +8,7 @@ const LINE_COUNT = 100; // Match the density of Image 2
 const LINE_COLOR = 'rgba(255, 255, 255, 0.9)'; // Bright white
 const LINE_WIDTH = 0.4; // Thin lines from Image 2
 const GRID_HEIGHT = 0.5; // Lines cover 85% of screen height
+const GRID_WIDTH = 0.4;
 const LINE_POINTS = 30; // Number of vertices per line for smooth bending
 
 // Setup the line grid with a spring for each line
@@ -15,7 +16,15 @@ let lines = [];
 
 function initializeGrid() {
     lines = [];
-    const stepX = canvas.width / (LINE_COUNT + 1);
+
+    // 1. Calculate how wide the grid should actually be
+    const totalWidth = canvas.width * GRID_WIDTH;
+
+    // 2. Calculate the starting X position to keep it centered
+    const startX = (canvas.width - totalWidth) / 2;
+
+    // 3. Calculate spacing based on that smaller width
+    const stepX = totalWidth / (LINE_COUNT - 1);
 
     for (let i = 0; i < LINE_COUNT; i++) {
         // Calculate base position spread horizontally
