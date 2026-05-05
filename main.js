@@ -6,9 +6,9 @@ const ctx = canvas.getContext('2d');
 // Grid Configuration
 const LINE_COUNT = 100; // Match the density of Image 2
 const LINE_COLOR = 'rgba(255, 255, 255, 0.9)'; // Bright white
-const LINE_WIDTH = 0.4; // Thin lines from Image 2
+const LINE_WIDTH = 1.0; // Thin lines from Image 2
 const GRID_HEIGHT = 0.5; // Lines cover 85% of screen height
-const GRID_WIDTH = 0.4;
+const GRID_WIDTH = 0.5;
 const LINE_POINTS = 30; // Number of vertices per line for smooth bending
 
 // Setup the line grid with a spring for each line
@@ -16,19 +16,19 @@ let lines = [];
 
 function initializeGrid() {
     lines = [];
-
-    // 1. Calculate how wide the grid should actually be
-    const totalWidth = canvas.width * GRID_WIDTH;
-
-    // 2. Calculate the starting X position to keep it centered
-    const startX = (canvas.width - totalWidth) / 2;
-
-    // 3. Calculate spacing based on that smaller width
-    const stepX = totalWidth / (LINE_COUNT - 1);
-
+    
+    // 1. Calcula a largura real que a grelha vai ocupar
+    const totalGridWidth = canvas.width * GRID_WIDTH;
+    
+    // 2. Calcula onde deve começar (margem esquerda) para ficar centrada
+    const startX = (canvas.width - totalGridWidth) / 2;
+    
+    // 3. O espaço entre linhas (stepX) agora é baseado na largura da grelha, não do ecrã
+    const stepX = totalGridWidth / (LINE_COUNT - 1);
+    
     for (let i = 0; i < LINE_COUNT; i++) {
-        // Calculate base position spread horizontally
-        const baseX = stepX + (i * stepX);
+        // A posição base agora soma o startX
+        const baseX = startX + (i * stepX);
         lines.push({
             baseX,
             spring: new Spring()
